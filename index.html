@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>无尽田野 · 自动驾驶联合收割机</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/src/style.css" />
+</head>
+<body>
+  <canvas id="scene"></canvas>
+
+  <!-- 片头 -->
+  <div id="intro">
+    <div class="intro-inner">
+      <div class="intro-kicker">ENDURANCE FARMS · MMXXVI</div>
+      <h1>无尽田野</h1>
+      <div class="intro-sub">自动驾驶联合收割机 · 玉米 / 小麦 / 大豆</div>
+      <div id="loading">
+        <div class="bar"><div id="loadbar"></div></div>
+        <div id="loadtext">正在准备…</div>
+      </div>
+      <button id="startBtn" class="hidden">进入农场</button>
+      <div class="intro-hint">建议使用桌面浏览器 · 首次加载需要几秒生成数十万株作物</div>
+    </div>
+  </div>
+
+  <div id="hud" class="hidden">
+    <!-- 左上：模式与任务 -->
+    <div id="topleft" class="panel">
+      <div class="brand">ENDURANCE <span>E9</span></div>
+      <div class="row">
+        <div id="modeChip" class="chip auto">自动驾驶</div>
+        <div id="cropChip" class="chip">玉米割台</div>
+      </div>
+      <div id="task">—</div>
+    </div>
+
+    <div id="rightcol">
+    <!-- 右上：设置 -->
+    <div id="settings" class="panel">
+      <div class="set-title">视角</div>
+      <div class="seg" id="camSeg">
+        <button data-cam="chase" class="on">跟随</button>
+        <button data-cam="cab">驾驶室</button>
+        <button data-cam="cinematic">电影</button>
+        <button data-cam="free">自由</button>
+      </div>
+      <div class="set-title">时间 <span id="timeLabel">午后</span></div>
+      <input type="range" id="timeSlider" min="-6" max="55" step="0.5" value="16" />
+      <div class="toggles">
+        <button id="btnStorm" class="tog">沙尘暴</button>
+        <button id="btnLights" class="tog">车灯</button>
+        <button id="btnSound" class="tog">声音</button>
+      </div>
+      <div class="set-title">作业倍速</div>
+      <div class="seg" id="speedSeg">
+        <button data-s="1" class="on">1×</button>
+        <button data-s="2">2×</button>
+        <button data-s="4">4×</button>
+        <button data-s="8">8×</button>
+      </div>
+      <div class="set-title">画质</div>
+      <div class="seg" id="qualSeg">
+        <button data-q="low">低</button>
+        <button data-q="medium" class="on">中</button>
+        <button data-q="high">高</button>
+      </div>
+      <button id="btnReset" class="wide">重新种植所有作物</button>
+    </div>
+
+    <!-- 右侧：统计 -->
+    <div id="stats" class="panel">
+      <div class="set-title">粮仓</div>
+      <div class="tank">
+        <div class="tank-bar"><div id="tankFill"></div></div>
+        <div id="tankText">0 / 2600 kg</div>
+      </div>
+      <div class="set-title">田块进度</div>
+      <div id="fieldList"></div>
+      <div class="set-title">累计收获（已卸至运粮车）</div>
+      <div id="totals"></div>
+    </div>
+    </div>
+
+    <!-- 底部仪表 -->
+    <div id="dash" class="panel">
+      <div class="gauge">
+        <div id="speed">0.0</div>
+        <div class="unit">km/h</div>
+      </div>
+      <div class="dash-col">
+        <div class="kv"><span>割台</span><b id="hdrState">抬起</b></div>
+        <div class="kv"><span>转向</span><div class="steer"><div id="steerDot"></div></div></div>
+        <div class="kv"><span>喂入量</span><div class="meter"><div id="feedMeter"></div></div></div>
+        <div class="kv"><span>卸粮</span><b id="unloadState">收起</b></div>
+      </div>
+    </div>
+
+    <canvas id="minimap" width="260" height="260"></canvas>
+
+    <div id="help" class="panel">
+      <div class="help-head">操作 <span>(按 ? 隐藏)</span></div>
+      <div class="keys">
+        <div><kbd>P</kbd> 自动 / 手动驾驶</div>
+        <div><kbd>W</kbd><kbd>S</kbd> 前进 / 后退</div>
+        <div><kbd>A</kbd><kbd>D</kbd> 转向</div>
+        <div><kbd>空格</kbd> 刹车</div>
+        <div><kbd>E</kbd> 升降割台</div>
+        <div><kbd>H</kbd> 切换割台</div>
+        <div><kbd>U</kbd> 卸粮搅龙</div>
+        <div><kbd>C</kbd> 切换视角</div>
+        <div><kbd>L</kbd> 车灯 <kbd>F</kbd> 沙尘暴</div>
+        <div><kbd>R</kbd> 车辆复位 <kbd>T</kbd> 倍速</div>
+        <div>鼠标拖动旋转视角，滚轮缩放</div>
+      </div>
+    </div>
+
+    <div id="toast"></div>
+    <div id="letterbox-top" class="letterbox"></div>
+    <div id="letterbox-bottom" class="letterbox"></div>
+  </div>
+
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>
